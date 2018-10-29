@@ -1,0 +1,35 @@
+// NativeScript core theme
+// @see https://docs.nativescript.org/ui/theme
+@import '~nativescript-theme-core/scss/light';
+// Override variables here
+@import '~nativescript-theme-core/scss/index';
+// Global SCSS styling
+// @see https://docs.nativescript.org/ui/styling
+.mdi {
+    font-family: materialdesignicons, "Material Design Icons";
+}
+
+.bg-color-primary {
+    background-color: #34bfc5;
+}
+
+.btn {
+    background-color: #34bfc5;
+}
+
+.menu {
+    font-size: 30;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.action-bar-title {
+    font-size: 20;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.hr {
+    height: 2;
+    background-color: #171049;
+}
