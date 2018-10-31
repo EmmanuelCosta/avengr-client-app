@@ -43,7 +43,9 @@ export default {
   },
 
   props: [
-      "title"
+      "title",
+      "userName",
+      "userEmail"
   ],
 
   data() {

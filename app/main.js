@@ -9,7 +9,6 @@ Vue.registerElement("CardView", () => require("nativescript-cardview").CardView)
 
 import Pages from './shared/pages';
 import Icons from './shared/icons';
-import Service from './shared/services/auth';
 
 Vue.prototype.$pages = new Pages();
 Vue.prototype.$icons = new Icons();

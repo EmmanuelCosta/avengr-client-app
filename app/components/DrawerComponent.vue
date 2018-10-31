@@ -8,7 +8,7 @@
             <GridLayout columns="*" rows="30,30"
                 class="drawer-header-info">
                 <Label text="Bonjour" row="0" fontSize="22"/>
-                <Label text="Fabrice IYONGO" row="1" />
+                <Label :text="user.username" row="1" />
             </GridLayout>
         </StackLayout>
 
@@ -62,14 +62,22 @@
 
 
 <script>
+const localStorage = require( "nativescript-localstorage" );
+
 export default {
   props: [],
 
   data() {
     return {
+        user: {},
         is_profile: true,
         is_about: false
     };
+  },
+
+  mounted() {
+      this.user = JSON.parse(localStorage.getItem("user"));
+      console.dir(this.user);
   },
 
   methods: {
