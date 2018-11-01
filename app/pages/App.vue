@@ -49,11 +49,12 @@
 
 <script>
 import AuthService from "./../shared/services/auth.js";
-import JWT from "./../shared/jwt.js";
+
+const JWT = require("./../shared/jwt.js");
 const localStorage = require( "nativescript-localstorage" );
 
 const auth = new AuthService();
-const jwt = new JWT();
+
 const TOKEN = "Bearer ";
 
 export default {
@@ -80,7 +81,7 @@ export default {
             if(resp.statusCode === 200) {
                 console.log("login success");
                 var enc_token = resp.headers.Authorization.replace(TOKEN, "");
-                var dec_token = jwt.decode(enc_token);
+                var dec_token = JWT.decode(enc_token);
                 localStorage.setItem("token", enc_token);
                 var payload = JSON.parse(dec_token.payload);
                 localStorage.setItem("user", JSON.stringify({
@@ -98,7 +99,6 @@ export default {
             console.log("Error")
             console.dir(error);
         });
-        
     }
   }
 };

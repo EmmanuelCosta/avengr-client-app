@@ -56,6 +56,13 @@
             <stack-layout >
 
                 <stack-layout class="form">
+
+                    <StackLayout class="input-field">
+                        <Label text="Civilité" class="label font-weight-bold" fontSize="15" color="#34bfc5" />
+                        <TextField class="input" :editable="editable" v-model="user.civilite"/>
+                        <StackLayout class="hr-light"></StackLayout>
+                    </StackLayout>
+
                     <StackLayout class="input-field">
                         <Label text="Nom" class="label font-weight-bold" fontSize="15" color="#34bfc5"/>
                         <TextField class="input" :editable="editable" v-model="user.firstName"/>
@@ -64,33 +71,70 @@
 
                     <StackLayout class="input-field">
                         <Label text="Prénom" class="label font-weight-bold" fontSize="15" color="#34bfc5"/>
-                        <TextField class="input" :editable="editable" v-model="user.secondName"/>
+                        <TextField class="input" :editable="editable" v-model="user.lastName"/>
+                        <StackLayout class="hr-light"></StackLayout>
+                    </StackLayout>
+
+                    <StackLayout class="input-field">
+                        <Label text="Nom de naissance" class="label font-weight-bold" fontSize="15" color="#34bfc5" />
+                        <TextField class="input" :editable="editable" v-model="user.birthName"/>
                         <StackLayout class="hr-light"></StackLayout>
                     </StackLayout>
 
                     <StackLayout class="input-field">
                         <Label text="Date de naissance" class="label font-weight-bold" fontSize="15" color="#34bfc5" />
-                        <TextField class="input" :editable="editable" v-model="user.dateBirth"/>
+                        <TextField class="input" :editable="editable" v-model="user.birthDate"/>
+                        <StackLayout class="hr-light"></StackLayout>
+                    </StackLayout>
+
+                    <StackLayout class="input-field">
+                        <Label text="Commune de naissance" class="label font-weight-bold" fontSize="15" color="#34bfc5" />
+                        <TextView class="input" :editable="editable" v-model="user.birthCommune"/>
+                        <StackLayout class="hr-light"></StackLayout>
+                    </StackLayout>
+
+                    <StackLayout class="input-field">
+                        <Label text="Département de naissance" class="label font-weight-bold" fontSize="15" color="#34bfc5" />
+                        <TextField class="input" :editable="editable" v-model="user.birthDpt"/>
+                        <StackLayout class="hr-light"></StackLayout>
+                    </StackLayout>
+
+                    <StackLayout class="input-field">
+                        <Label text="Pays d'origine" class="label font-weight-bold" fontSize="15" color="#34bfc5" />
+                        <TextField class="input" :editable="editable" v-model="user.nativeCountryName"/>
                         <StackLayout class="hr-light"></StackLayout>
                     </StackLayout>
 
                     <StackLayout class="input-field">
                         <Label text="Adresse" class="label font-weight-bold" fontSize="15" color="#34bfc5" />
-                        <TextView class="input" :editable="editable" v-model="user.adress"/>
+                        <TextField class="input" :editable="editable" v-model="user.address"/>
                         <StackLayout class="hr-light"></StackLayout>
                     </StackLayout>
 
                     <StackLayout class="input-field">
-                        <Label text="Pays" class="label font-weight-bold" fontSize="15" color="#34bfc5" />
-                        <TextField class="input" :editable="editable" v-model="user.country"/>
+                        <Label text="Code postal" class="label font-weight-bold" fontSize="15" color="#34bfc5" />
+                        <TextField class="input" :editable="editable" v-model="user.postalCode"/>
                         <StackLayout class="hr-light"></StackLayout>
                     </StackLayout>
 
                     <StackLayout class="input-field">
-                        <Label text="Mail" class="label font-weight-bold" fontSize="15" color="#34bfc5" />
+                        <Label text="Ville" class="label font-weight-bold" fontSize="15" color="#34bfc5" />
+                        <TextField class="input" :editable="editable" v-model="user.city"/>
+                        <StackLayout class="hr-light"></StackLayout>
+                    </StackLayout>
+
+                    <StackLayout class="input-field">
+                        <Label text="Téléphone" class="label font-weight-bold" fontSize="15" color="#34bfc5" />
+                        <TextField class="input" :editable="editable" v-model="user.phone"/>
+                        <StackLayout class="hr-light"></StackLayout>
+                    </StackLayout>
+
+                    <StackLayout class="input-field">
+                        <Label text="Email" class="label font-weight-bold" fontSize="15" color="#34bfc5" />
                         <TextField class="input" :editable="editable" v-model="user.email"/>
                         <StackLayout class="hr-light"></StackLayout>
                     </StackLayout>
+
                 </stack-layout>
             </stack-layout>
 
@@ -102,6 +146,9 @@
 <script>
 //import DrawerComponent from "./../components/DrawerComponent";
 import PageComponent from "./../components/PageComponent";
+import MobileService from "./../shared/services/mobile.js";
+
+const mobileService = new MobileService();
 
 export default {
     
@@ -111,16 +158,29 @@ export default {
 
   data() {
     return {
-        user: {
-            firstName: "IYONGO",
-            secondName: "Fabrice",
-            dateBirth: "25 Mars 1900",
-            adress: "Kinshasa / Mont-ngafula, boma 45",
-            country: "L'Enfer Démocratique Du Congo",
-            email: "iyongofabrice@gmail.com"
-        },
+        user: { },
         editable: false
     };
+  },
+
+  mounted() {
+      const token = localStorage.getItem("token");
+      
+      mobileService.getEnsure(token).then((resp) => {
+            this.user = resp.content.toJSON();
+            localStorage.setItem("user", JSON.stringify(resp.content.toJSON()));
+            if(this.user.sex === "HOMME") {
+                this.user.civilite = "Monsieur";
+            }
+
+            if(this.user.sex === "FEMME") {
+                this.user.civilite = "Madame";
+            }
+            
+      }, (error) => {
+
+      });
+
   },
 
   methods: {

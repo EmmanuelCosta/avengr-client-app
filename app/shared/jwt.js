@@ -4,7 +4,7 @@
 
 var CryptoJS = require("crypto-js");
 
-export default class JWT {
+function JWT() {
 
     /**
      * options = {
@@ -13,7 +13,7 @@ export default class JWT {
      *  data: {}
      * }
      */
-    encode(options) {
+    this.encode = function(options) {
         var header = {
             type: "jwt",
             alg: undefined
@@ -55,7 +55,7 @@ export default class JWT {
      *  token: string
      * }
      */
-    decode(options) {
+    this.decode = function(options) {
         var info = options.split(".");
 
         return {
@@ -65,18 +65,20 @@ export default class JWT {
         }
     };
 
-    toBase64(data) {
+    this.toBase64 = function(data) {
         const encryptedWord = CryptoJS.enc.Utf8.parse(data);
         const encrypted = CryptoJS.enc.Base64.stringify(encryptedWord);
         return encrypted;
     };
 
-    fromBase64(data) {
+    this.fromBase64 = function(data) {
         const encryptedWord = CryptoJS.enc.Base64.parse(data);
         return encryptedWord.toString(CryptoJS.enc.Utf8);
     }
 
-    test() {
+    this.test = function() {
         console.log("test OK !");
     }
 }
+
+module.exports = new JWT();

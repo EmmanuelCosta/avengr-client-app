@@ -63,6 +63,9 @@
 <script>
 //import DrawerComponent from "./../components/DrawerComponent";
 import PageComponent from "./../components/PageComponent";
+import MobileService from "./../shared/services/mobile.js";
+
+const mobileService = new MobileService();
 
 export default {
     
@@ -74,6 +77,15 @@ export default {
     return {
         editable: false
     };
+  },
+
+  mounted() {
+      const token = localStorage.getItem("token");
+      mobileService.getContrat(token).then((resp) => {
+            console.dir(resp.content.toJSON());
+      }, (error) => {
+
+      });
   },
 
   methods: {

@@ -77,7 +77,6 @@ export default {
 
   mounted() {
       this.user = JSON.parse(localStorage.getItem("user"));
-      console.dir(this.user);
   },
 
   methods: {
