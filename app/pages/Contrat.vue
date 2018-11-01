@@ -1,7 +1,7 @@
 <template>
     <page-component title="Mon contrat"
         backgroundImage="url('~/assets/images/login-register.jpg')"
-         columns="*"
+        columns="*"
         rows="150,auto,*"
         backgroundSize="cover">
         
@@ -12,43 +12,61 @@
                     <stack-layout class="form">
                         <StackLayout class="input-field">
                             <Label text="Numéro du contrat" class="label font-weight-bold" fontSize="15" color="#34bfc5"/>
-                            <TextField class="input" :editable="editable" text="500"/>
+                            <TextField class="input" :editable="editable" v-model="contrat.code"/>
                             <StackLayout class="hr-light"></StackLayout>
                         </StackLayout>
 
                         <StackLayout class="input-field">
                             <Label text="Produit" class="label font-weight-bold" fontSize="15" color="#34bfc5"/>
-                            <TextField class="input" :editable="editable" text="Oyo nde"/>
+                            <TextField class="input" :editable="editable" v-model="contrat.commercialTechnicalName"/>
                             <StackLayout class="hr-light"></StackLayout>
                         </StackLayout>
 
                         <StackLayout class="input-field">
                             <Label text="Date de suscription" class="label font-weight-bold" fontSize="15" color="#34bfc5" />
-                            <TextField class="input" :editable="editable" text="23 octobre 2018 "/>
+                            <TextField class="input" :editable="editable" v-model="contrat.registrationDate"/>
                             <StackLayout class="hr-light"></StackLayout>
                         </StackLayout>
 
                         <StackLayout class="input-field">
                             <Label text="Assistance" class="label font-weight-bold" fontSize="15" color="#34bfc5" />
-                            <TextView class="input" :editable="editable" text=" ? "/>
+                            <TextView class="input" :editable="editable" :text="contrat.hasAssistance ? 'Oui':'Non'"/>
                             <StackLayout class="hr-light"></StackLayout>
                         </StackLayout>
 
-                        <StackLayout class="input-field">
+                        <StackLayout class="input-field" v-if="!isUnique">
                             <Label text="Fractionnement" class="label font-weight-bold" fontSize="15" color="#34bfc5" />
-                            <TextField class="input" :editable="editable" text="3"/>
+                            <TextField class="input" :editable="editable" :text="contrat.splittingName"/>
+                            <StackLayout class="hr-light"></StackLayout>
+                        </StackLayout>
+
+                        <StackLayout class="input-field" v-if="!isUnique">
+                            <Label text="Durée de payement" class="label font-weight-bold" fontSize="15" color="#34bfc5" />
+                            <TextField class="input" :editable="editable" :text="contrat.paymentDuration"/>
                             <StackLayout class="hr-light"></StackLayout>
                         </StackLayout>
 
                         <StackLayout class="input-field">
                             <Label text="Capital" class="label font-weight-bold" fontSize="15" color="#34bfc5" />
-                            <TextField class="input" :editable="editable" text="300$"/>
+                            <TextField class="input" :editable="editable" v-model="contrat.initialCapital"/>
                             <StackLayout class="hr-light"></StackLayout>
                         </StackLayout>
 
                         <StackLayout class="input-field">
                             <Label text="Accompte" class="label font-weight-bold" fontSize="15" color="#34bfc5" />
-                            <TextField class="input" :editable="editable" text="100$"/>
+                            <TextField class="input" :editable="editable" :text="contrat.deposit"/>
+                            <StackLayout class="hr-light"></StackLayout>
+                        </StackLayout>
+
+                        <StackLayout class="input-field">
+                            <Label text="Est un avenant ?" class="label font-weight-bold" fontSize="15" color="#34bfc5" />
+                            <TextField class="input" :editable="editable" :text="contrat.isEndorsement ? 'Oui': 'Non'"/>
+                            <StackLayout class="hr-light"></StackLayout>
+                        </StackLayout>
+
+                        <StackLayout class="input-field" v-if="!isUnique">
+                            <Label text="Jour de retrait" class="label font-weight-bold" fontSize="15" color="#34bfc5" />
+                            <TextField class="input" :editable="editable" :text="'Le ' + contrat.paymentDay + ' du mois'"/>
                             <StackLayout class="hr-light"></StackLayout>
                         </StackLayout>
 
@@ -75,14 +93,20 @@ export default {
 
   data() {
     return {
-        editable: false
+        isUnique: false,
+        editable: false,
+        contrat: {}
     };
   },
 
   mounted() {
       const token = localStorage.getItem("token");
       mobileService.getContrat(token).then((resp) => {
-            console.dir(resp.content.toJSON());
+        this.contrat = resp.content.toJSON();
+        if(this.contrat.premiumType === "PRIME UNIQUE") {
+            this.isUnique = true;
+        }
+        console.dir(this.contrat);
       }, (error) => {
 
       });
