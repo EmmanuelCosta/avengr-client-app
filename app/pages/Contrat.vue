@@ -1,5 +1,5 @@
 <template>
-    <page-component title="Mon contrat"
+    <page-component title="Détails contrat"
         backgroundImage="url('~/assets/images/login-register.jpg')"
         columns="*"
         rows="150,auto,*"
@@ -81,9 +81,9 @@
 <script>
 //import DrawerComponent from "./../components/DrawerComponent";
 import PageComponent from "./../components/PageComponent";
-import MobileService from "./../shared/services/mobile.js";
+import ContratService from "./../shared/services/contrat.js";
 
-const mobileService = new MobileService();
+const contratService = new ContratService();
 
 export default {
     
@@ -101,12 +101,11 @@ export default {
 
   mounted() {
       const token = localStorage.getItem("token");
-      mobileService.getContrat(token).then((resp) => {
+      contratService.get(token).then((resp) => {
         this.contrat = resp.content.toJSON();
         if(this.contrat.premiumType === "PRIME UNIQUE") {
             this.isUnique = true;
         }
-        console.dir(this.contrat);
       }, (error) => {
 
       });

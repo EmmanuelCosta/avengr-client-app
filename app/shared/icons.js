@@ -21,6 +21,13 @@ export default class Icons {
             box: "\uf21a"
         };
 
+        this.death = {
+            start: "\uf8d7",
+            start: {
+                variant: "\uf8d8"
+            }
+        }
+
         this.download = {
             default: "\uf1da"
         };
@@ -38,5 +45,10 @@ export default class Icons {
         }
 
         this.menu = "\uf35c";
+
+        this.logout = {
+            default: "\uf343",
+            variant: "\uf5fd"
+        }
     }
 }

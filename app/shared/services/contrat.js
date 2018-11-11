@@ -1,15 +1,15 @@
 var Constante = require("./../constante");
 import * as http from "http";
-export default class MobileService {
+export default class ContratService {
 
     constructor() {
 
     }
 
-    getContrat(token) {
+    get(token) {
         return http.request({
             url: Constante.baseUrl + "/api/mobile/user/contract",
-            method: "POST",
+            method: "post",
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": token
@@ -18,10 +18,10 @@ export default class MobileService {
         });
     }
 
-    getEnsure(token) {
+    get_contact(token) {
         return http.request({
-            url: Constante.baseUrl + "/api/mobile/user/ensure",
-            method: "POST",
+            url: Constante.baseUrl + "/api/funeralHome/",
+            method: "post",
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": token
@@ -30,15 +30,5 @@ export default class MobileService {
         });
     }
 
-    getDoc(token) {
-        return http.request({
-            url: Constante.baseUrl + "/api/mobile/user/files",
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": token
-            },
-            content: JSON.stringify()
-        });
-    }
+
 }

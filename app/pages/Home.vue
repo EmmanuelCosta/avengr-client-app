@@ -1,5 +1,5 @@
 <template>
-    <page-component title="Mon profile"
+    <page-component title="Mon profil"
         backgroundImage="url('~/assets/images/login-register.jpg')"
         columns="*"
         rows="150,auto,*"
@@ -146,9 +146,9 @@
 <script>
 //import DrawerComponent from "./../components/DrawerComponent";
 import PageComponent from "./../components/PageComponent";
-import MobileService from "./../shared/services/mobile.js";
+import EnsureService from "./../shared/services/ensure.js";
 
-const mobileService = new MobileService();
+const ensureService = new EnsureService();
 
 export default {
     
@@ -166,7 +166,7 @@ export default {
   mounted() {
       const token = localStorage.getItem("token");
       
-      mobileService.getEnsure(token).then((resp) => {
+      ensureService.get(token).then((resp) => {
             this.user = resp.content.toJSON();
             localStorage.setItem("user", JSON.stringify(resp.content.toJSON()));
             if(this.user.sex === "HOMME") {

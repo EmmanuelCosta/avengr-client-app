@@ -20,39 +20,72 @@
                     paddingTop="5"
                     paddingBottom="5"
                     :class="{item:true}"
-                    @tap="$navigateTo($pages.home)">
+                    @tap="$navigateTo($pages.contratObseque, {
+                        transition: {
+                            name: 'fade',
+                            duration: 1250,
+                            curve: 'easeIn'
+                        }
+                    })">
+                    <Label class="drawer-item-icon" col="0" :text="$icons.death.start.variant"/>
+                    <Label class="drawer-item" col="1" text="Mon Contrat Obseque"/>
+                </GridLayout>
+                
+                <GridLayout rows="35" columns="40, *" 
+                    paddingTop="5"
+                    paddingBottom="5"
+                    :class="{item:true}"
+                    @tap="$navigateTo($pages.home, {
+                        transition: {
+                            name: 'fade',
+                            duration: 1250,
+                            curve: 'easeIn'
+                        }
+                    })">
                     <Label class="drawer-item-icon" col="0" :text="$icons.face.profile"/>
-                    <Label class="drawer-item" col="1" text="Mon Profile"/>
+                    <Label class="drawer-item" col="1" text="Mon Profil"/>
                 </GridLayout>
 
                 <GridLayout rows="35" columns="40, *" 
                     paddingTop="5"
                     paddingBottom="5"
                     class="item"
-                    @tap="$navigateTo($pages.contrat)">
+                    @tap="$navigateTo($pages.contrat, {
+                        transition: {
+                            name: 'fade',
+                            duration: 1250,
+                            curve: 'easeIn'
+                        }
+                    })">
                     <Label class="drawer-item-icon" col="0" :text="$icons.briefcase.default"/>
-                    <Label class="drawer-item" col="1" text="Mon Contrat"/>
+                    <Label class="drawer-item" col="1" text="Détails Contrats"/>
                 </GridLayout>
                 
                 <GridLayout rows="35" columns="40, *" 
                     paddingTop="5"
                     paddingBottom="5"
                     class="item"
-                    @tap="$navigateTo($pages.documents)">
+                    @tap="$navigateTo($pages.documents, {
+                        transition: {
+                            name: 'fade',
+                            duration: 1250,
+                            curve: 'easeIn'
+                        }
+                    })">
                     <Label class="drawer-item-icon" col="0" :text="$icons.folder.account"/>
                     <Label class="drawer-item" col="1" text="Mes Documents"/>
                 </GridLayout>
 
                 <StackLayout class="hr"/>
 
-                <GridLayout rows="35" columns="40, *" 
+                <!--GridLayout rows="35" columns="40, *" 
                     paddingTop="5"
                     paddingBottom="5"
                     class="item"
                     @tap="$navigateTo($pages.about)">
                     <Label class="drawer-item-icon" col="0" :text="$icons.information.default"/>
                     <Label class="drawer-item" col="1" text="À propos"/>
-                </GridLayout>
+                </GridLayout-->
 
             </StackLayout>
         </ScrollView>
@@ -76,22 +109,11 @@ export default {
   },
 
   mounted() {
-      this.user = JSON.parse(localStorage.getItem("user"));
+      this.user = this.$store.getUser();
   },
 
   methods: {
-      goTo: function(src, component) {
-          
-          if(src === "home")  {
-              this.is_profile = false;
-              this.$navigateTo(component);
-          }
-
-          if(src === "about")  {
-              this.is_about = false;
-              this.$navigateTo(component);
-          }
-      }
+      
   }
 };
 </script>

@@ -1,8 +1,18 @@
 <template>
     <page-component title="Mes Documents">
         <StackLayout >
+
+            <ActivityIndicator
+                class="color-primary"
+                :busy="loading"
+                v-if="loadin"
+                width="100"
+                height="100"
+                verticalAlignment="middle"/>
+
             <stack-layout
-                padding="10">
+                padding="10"
+                 >
                 <label 
                     text="Veillez clicquer sur le document à visualiser"
                     color="#34bfc5"
@@ -15,21 +25,24 @@
                 <scroll-view>
                     <stack-layout
                         marginLeft="15"
-                        marginRight="15">
+                        marginRight="15"
+                        v-if="! loading">>
                         
                         <CardView 
                             class="cardStyle"
                             margin="5"
                             elevation="10"
                             radius="1"
-                            v-for="(item, index) in documents">
+                            :borderLeftColor="item.color"
+                            v-for="(item, index) in documents"
+                            @tap="selectItem(item)">
 
                             <stack-layout
                                 borderLeftWidth="10"
                                 :borderLeftColor="item.color"
                                 minHeight="50">
                                 
-                                <Label :text="item.titre" 
+                                <Label :text="item.name" 
                                     class="font-weight-bold"
                                     fontSize="15" 
                                     color="#37474f"
@@ -52,6 +65,9 @@
 <script>
 //import DrawerComponent from "./../components/DrawerComponent";
 import PageComponent from "./../components/PageComponent";
+import DocumentService from "./../shared/services/document.js";
+
+const documentService = new DocumentService();
 
 export default {
     
@@ -61,66 +77,47 @@ export default {
 
   data() {
     return {
-        colors: {
-            purple: "#8e24aa",
-            yellow: "#ffff00",
-            green: "#4caf50"
-        },
+        loading: false,
+        colors: [
+            "#8e24aa", //purple
+            "#4caf50", //green
+            "#ffff00", //yellow
+            "#eeff41", //lime accent-2
+            "#ff9800", //orange
+        ],
 
-        documents: [
-            {
-                titre: "Titre du document",
-                color: "#8e24aa"
-            },
-
-            {
-                titre: "Bulletin de souscription",
-                color: "#ffff00"
-            },
-
-            {
-                titre: "Certification de ressurection",
-                color: "#4caf50"
-            },
-
-            {
-                titre: "Permis de Kuluna",
-                color: "#ffff00"
-            },
-
-            {
-                titre: "Autorisation de suicide",
-                color: "#4caf50"
-            },
-
-            {
-                titre: "Contrat d'escroquerie",
-                color: "#8e24aa"
-            },
-
-            {
-                titre: "Certificat de divorce",
-                color: "#ffff00"
-            },
-
-            {
-                titre: "Attestion de naissance",
-                color: "#4caf50"
-            },
-
-            {
-                titre: "Certificat de mariage",
-                color: "#8e24aa"
-            }
-        ]
+        documents: []
     };
   },
 
   methods: {
-     onItemTap(item) {
+     selectItem(item) {
+         console.log("tap")
          console.dir(item)
+         alert("Download " + JSON.stringify(item));
+         var params = {
+             
+         };
+     },
+
+     getRandomColor() {
+         var index = Math.floor(Math.random() * Math.floor(this.colors.length - 1));
+         return this.colors[index];
      }
-  }
+  },
+
+  mounted() {
+      const token = localStorage.getItem("token");
+      documentService.get(token).then((resp)=>{
+          resp.content.toJSON().forEach(element => {
+              element.color = this.getRandomColor();
+              this.documents.push(element);
+          });
+          this.loading = false;
+      }, (error)=>{
+
+      });
+  },
 };
 </script>
 
