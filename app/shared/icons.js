@@ -44,11 +44,17 @@ export default class Icons {
             default: "\uf2fc"
         }
 
-        this.menu = "\uf35c";
-
         this.logout = {
             default: "\uf343",
             variant: "\uf5fd"
+        }
+
+        this.menu = "\uf35c";
+
+        this.shared = {
+            default: "\uf496",
+            outline: "\uf931",
+            variant: "\uf497"
         }
     }
 }

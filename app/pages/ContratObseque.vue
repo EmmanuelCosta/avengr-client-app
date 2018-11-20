@@ -23,11 +23,11 @@
                         <Label textWrap="true" textAlignment="center">
                             <FormattedString>
                                 <Span text="J'ai souscrit mon contrat Obsèques auprès de "/>
-                                <Span :text="this.contrat.socialName" class="info" fontDecoration=""/>
+                                <Span :text="contrat.socialName" class="info" fontDecoration=""/>
                                 <Span text=" situé dans la ville de  "/>
-                                <Span :text="this.contrat.city" class="info"/>
+                                <Span :text="contrat.city" class="info"/>
                                 <Span text=" sur "/>
-                                <Span :text="this.contrat.address" class="info"/>
+                                <Span :text="contrat.address" class="info"/>
                             </FormattedString>
                         </Label>
 
@@ -79,6 +79,13 @@ export default {
       contratService.get_contact(token).then((resp) => {
         this.contrat = resp.content.toJSON();
         console.dir(this.contrat);
+        this.$store.setMessageToShare(`
+            J'ai souscrit mon contrat Obsèques auprès de` + this.contrat.socialName + `
+            situé dans la ville de  ` + this.contrat.city + ` sur ` + this.contrat.address + `\n
+            Le numéro de l'assistance à composer en cas de décès à plus de 50Km :  + 00 33 (1) 42 99 82 78 
+            avec le numéro de la convention assistance :  "C55U"\n
+            ATTENTION : "Demander un numéro de prise en charge avant toute interventions"
+        `);
         this.loading = false;
       }, (error) => {
           console.dir(error);

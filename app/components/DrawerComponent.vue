@@ -78,6 +78,15 @@
 
                 <StackLayout class="hr"/>
 
+                <GridLayout rows="35" columns="40, *" 
+                    paddingTop="5"
+                    paddingBottom="5"
+                    class="item"
+                    @tap="share">
+                    <Label class="drawer-item-icon" col="0" :text="$icons.shared.variant"/>
+                    <Label class="drawer-item" col="1" text="Partager"/>
+                </GridLayout>
+
                 <!--GridLayout rows="35" columns="40, *" 
                     paddingTop="5"
                     paddingBottom="5"
@@ -98,7 +107,9 @@
 const localStorage = require( "nativescript-localstorage" );
 
 export default {
-  props: [],
+  props: [
+      'drawer'
+  ],
 
   data() {
     return {
@@ -113,7 +124,11 @@ export default {
   },
 
   methods: {
-      
+      share() {
+          console.log("share");
+          this.drawer.nativeView.closeDrawer();
+          this.$socialShare.shareText('Bonjour\n' + this.$store.getMessageToShare());
+      }
   }
 };
 </script>

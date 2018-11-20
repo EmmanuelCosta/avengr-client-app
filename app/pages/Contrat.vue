@@ -17,7 +17,7 @@
                         </StackLayout>
 
                         <StackLayout class="input-field">
-                            <Label text="Produit" class="label font-weight-bold" fontSize="15" color="#34bfc5"/>
+                            <Label text="Solution" class="label font-weight-bold" fontSize="15" color="#34bfc5"/>
                             <TextField class="input" :editable="editable" v-model="contrat.commercialTechnicalName"/>
                             <StackLayout class="hr-light"></StackLayout>
                         </StackLayout>

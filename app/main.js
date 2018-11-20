@@ -10,10 +10,12 @@ Vue.registerElement("CardView", () => require("nativescript-cardview").CardView)
 import Pages from './shared/pages';
 import Icons from './shared/icons';
 import Store from './shared/store';
+import * as SocialShare from "nativescript-social-share"
 
 Vue.prototype.$pages = new Pages();
 Vue.prototype.$icons = new Icons();
 Vue.prototype.$store = new Store();
+Vue.prototype.$socialShare = SocialShare;
 
 
 new Vue({

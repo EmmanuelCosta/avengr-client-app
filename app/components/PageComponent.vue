@@ -4,7 +4,7 @@
 
         <RadSideDrawer ref="drawer" showOverNavigation="true">
             
-            <drawer-component />
+            <drawer-component :drawer="this.$refs.drawer"/>
 
             <StackLayout ~mainContent>
                 <GridLayout width="100%" rows="40" columns="auto, *" 
@@ -66,20 +66,28 @@ export default {
     };
   },
 
+  mounted() {
+      /*
+      this.$on('closeDrawer', function() {
+          this.$refs.drawer.nativeView.closeDrawer();
+      })
+      */
+  },
+
   methods: {
-      logout: function() {
-          console.dir("logout !");
-          localStorage.clear();
-          this.$navigateTo(this.$pages.login,{
-              transition: {
-                  name: "fade",
-                  duration: 1250,
-                  curve: "easeIn"
-              },
-              clearHistory: true,
-              propos: {}
-          });
-      }
+    logout: function() {
+        console.dir("logout !");
+        localStorage.clear();
+        this.$navigateTo(this.$pages.login,{
+            transition: {
+                name: "fade",
+                duration: 1250,
+                curve: "easeIn"
+            },
+            clearHistory: true,
+            psropos: {}
+        });
+    }
   }
 };
 </script>

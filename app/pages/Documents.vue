@@ -2,14 +2,6 @@
     <page-component title="Mes Documents">
         <StackLayout >
 
-            <ActivityIndicator
-                class="color-primary"
-                :busy="loading"
-                v-if="loadin"
-                width="100"
-                height="100"
-                verticalAlignment="middle"/>
-
             <stack-layout
                 padding="10"
                  >
@@ -25,8 +17,7 @@
                 <scroll-view>
                     <stack-layout
                         marginLeft="15"
-                        marginRight="15"
-                        v-if="! loading">>
+                        marginRight="15">
                         
                         <CardView 
                             class="cardStyle"
@@ -66,8 +57,10 @@
 //import DrawerComponent from "./../components/DrawerComponent";
 import PageComponent from "./../components/PageComponent";
 import DocumentService from "./../shared/services/document.js";
+import ContratService from "./../shared/services/contrat.js";
 
 const documentService = new DocumentService();
+const contratService = new ContratService();
 
 export default {
     
@@ -92,12 +85,16 @@ export default {
 
   methods: {
      selectItem(item) {
-         console.log("tap")
-         console.dir(item)
-         alert("Download " + JSON.stringify(item));
-         var params = {
-             
-         };
+         console.log("download file !")
+         const token = localStorage.getItem("token");
+         contratService.get(token).then((resp) => {
+            var contrat = resp.content.toJSON();
+            documentService.downloadFile(token, contrat.code, item.code).then((resp) => {
+                console.dir(resp.content.toJSON());
+            }, (error) => {
+                console.dir(error);
+            })
+         });
      },
 
      getRandomColor() {

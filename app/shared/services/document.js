@@ -18,15 +18,20 @@ export default class DocumentService {
         });
     }
 
-    downloadFile(token, params) {
+    downloadFile(token, code, typeCode) {
+        console.log("typeCode => " + code);
+        console.log("code => " + typeCode);
+
         return http.request({
             url: Constante.baseUrl + "/api/download",
-            method: "post",
+            method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": token
+                "Authorization": token,
+                "typeCode": typeCode,
+                "code": code
             },
-            content: JSON.stringify(params)
+            content: JSON.stringify()
         });
     }
 }

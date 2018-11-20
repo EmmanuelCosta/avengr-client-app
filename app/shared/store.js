@@ -1,7 +1,8 @@
 export default class Store {
     constructor() {
         this.state = {
-            user: {}
+            user: {},
+            messageToShare: ''
         }
     }
 
@@ -11,6 +12,14 @@ export default class Store {
 
     getUser() {
         return this.state.user;
+    }
+
+    setMessageToShare(message) {
+        this.state.messageToShare = message;
+    }
+
+    getMessageToShare() {
+        return this.state.messageToShare;
     }
 
 }
