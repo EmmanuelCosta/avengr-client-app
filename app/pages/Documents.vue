@@ -6,18 +6,25 @@
                 padding="10"
                  >
                 <label 
-                    text="Veillez clicquer sur le document à visualiser"
+                    text="Veuillez clisquer sur le document à visualiser"
                     color="#34bfc5"
                     textWrap="true"
                     fontSize="20"
                     textAlignment="center"/>
             </stack-layout>
+
+            <!--ActivityIndicator
+                col="0"
+                row="0" rowSpan="3"
+                class="color-primary"
+                :busy="loading"
+                width="100"
+                height="100"
+                verticalAlignment="middle"/-->
             
-            <stack-layout>
+            <stack-layout >
                 <scroll-view>
-                    <stack-layout
-                        marginLeft="15"
-                        marginRight="15">
+                    <stack-layout padding="5">
                         
                         <CardView 
                             class="cardStyle"
@@ -59,6 +66,8 @@ import PageComponent from "./../components/PageComponent";
 import DocumentService from "./../shared/services/document.js";
 import ContratService from "./../shared/services/contrat.js";
 
+const dialogsModule = require("tns-core-modules/ui/dialogs");
+
 const documentService = new DocumentService();
 const contratService = new ContratService();
 
@@ -85,13 +94,21 @@ export default {
 
   methods: {
      selectItem(item) {
+         this.loading = true;
          console.log("download file !")
          const token = localStorage.getItem("token");
+         dialogsModule.action({
+            title: "Download file \"" + item.name + "\".pdf",
+            okButtonText: "ok",
+            cancelable: true,
+            message: "Vérification d'un bug"
+        });
          contratService.get(token).then((resp) => {
             var contrat = resp.content.toJSON();
-            documentService.downloadFile(token, contrat.code, item.code).then((resp) => {
-                console.dir(resp.content.toJSON());
+            documentService.downloadFile(token,  contrat.code, item.code).then((file) => {
+                documentService.saveFile(file, item.name, this.$store.getPathRootFolder());
             }, (error) => {
+                this.loading = true;
                 console.dir(error);
             })
          });

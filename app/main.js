@@ -17,6 +17,7 @@ Vue.prototype.$icons = new Icons();
 Vue.prototype.$store = new Store();
 Vue.prototype.$socialShare = SocialShare;
 
+Vue.prototype.$store.defineDirectoryRoot();
 
 new Vue({
     render: h => h('frame', [h(App)])

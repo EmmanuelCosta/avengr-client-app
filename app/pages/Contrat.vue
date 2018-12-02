@@ -1,5 +1,5 @@
 <template>
-    <page-component title="Détails contrat"
+    <page-component title="Détail Contrat"
         backgroundImage="url('~/assets/images/login-register.jpg')"
         columns="*"
         rows="150,auto,*"
@@ -23,7 +23,7 @@
                         </StackLayout>
 
                         <StackLayout class="input-field">
-                            <Label text="Date de suscription" class="label font-weight-bold" fontSize="15" color="#34bfc5" />
+                            <Label text="Date de souscription" class="label font-weight-bold" fontSize="15" color="#34bfc5" />
                             <TextField class="input" :editable="editable" v-model="contrat.registrationDate"/>
                             <StackLayout class="hr-light"></StackLayout>
                         </StackLayout>
@@ -41,7 +41,7 @@
                         </StackLayout>
 
                         <StackLayout class="input-field" v-if="!isUnique">
-                            <Label text="Durée de payement" class="label font-weight-bold" fontSize="15" color="#34bfc5" />
+                            <Label text="Durée de paiement" class="label font-weight-bold" fontSize="15" color="#34bfc5" />
                             <TextField class="input" :editable="editable" :text="contrat.paymentDuration"/>
                             <StackLayout class="hr-light"></StackLayout>
                         </StackLayout>
@@ -53,7 +53,7 @@
                         </StackLayout>
 
                         <StackLayout class="input-field">
-                            <Label text="Accompte" class="label font-weight-bold" fontSize="15" color="#34bfc5" />
+                            <Label text="Acompte" class="label font-weight-bold" fontSize="15" color="#34bfc5" />
                             <TextField class="input" :editable="editable" :text="contrat.deposit"/>
                             <StackLayout class="hr-light"></StackLayout>
                         </StackLayout>

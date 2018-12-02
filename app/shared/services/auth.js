@@ -11,7 +11,8 @@ export default class AuthService {
                 "email": login,
                 "newPassword": "",
                 "password": password
-            })
+            }),
+            timeout: 1000
         });
     }
 }

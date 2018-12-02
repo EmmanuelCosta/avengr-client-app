@@ -22,9 +22,7 @@
                     :class="{item:true}"
                     @tap="$navigateTo($pages.contratObseque, {
                         transition: {
-                            name: 'fade',
-                            duration: 1250,
-                            curve: 'easeIn'
+                            name: 'slide'
                         }
                     })">
                     <Label class="drawer-item-icon" col="0" :text="$icons.death.start.variant"/>
@@ -37,9 +35,7 @@
                     :class="{item:true}"
                     @tap="$navigateTo($pages.home, {
                         transition: {
-                            name: 'fade',
-                            duration: 1250,
-                            curve: 'easeIn'
+                            name: 'slide'
                         }
                     })">
                     <Label class="drawer-item-icon" col="0" :text="$icons.face.profile"/>
@@ -52,13 +48,11 @@
                     class="item"
                     @tap="$navigateTo($pages.contrat, {
                         transition: {
-                            name: 'fade',
-                            duration: 1250,
-                            curve: 'easeIn'
+                            name: 'slide'
                         }
                     })">
                     <Label class="drawer-item-icon" col="0" :text="$icons.briefcase.default"/>
-                    <Label class="drawer-item" col="1" text="Détails Contrats"/>
+                    <Label class="drawer-item" col="1" text="Détail Contrat"/>
                 </GridLayout>
                 
                 <GridLayout rows="35" columns="40, *" 
@@ -67,9 +61,7 @@
                     class="item"
                     @tap="$navigateTo($pages.documents, {
                         transition: {
-                            name: 'fade',
-                            duration: 1250,
-                            curve: 'easeIn'
+                            name: 'slide'
                         }
                     })">
                     <Label class="drawer-item-icon" col="0" :text="$icons.folder.account"/>

@@ -66,14 +66,6 @@ export default {
     };
   },
 
-  mounted() {
-      /*
-      this.$on('closeDrawer', function() {
-          this.$refs.drawer.nativeView.closeDrawer();
-      })
-      */
-  },
-
   methods: {
     logout: function() {
         console.dir("logout !");
@@ -81,8 +73,7 @@ export default {
         this.$navigateTo(this.$pages.login,{
             transition: {
                 name: "fade",
-                duration: 1250,
-                curve: "easeIn"
+                duration: 500,
             },
             clearHistory: true,
             psropos: {}
