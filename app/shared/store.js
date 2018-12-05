@@ -28,20 +28,7 @@ export default class Store {
 
     defineDirectoryRoot() {
         if (PlatformModule.isAndroid) {
-            /*
-            var folder = undefined;
-            var directory = new java.io.File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/Mon_Contrat_Obseque");
-            if (!directory.exists()) {
-                console.dir(directory);
-                const folder = directory.mkdirs();
-                console.dir("Create folder DirectoryRoot => " + directory.mkdirs());
-            }
-
-            console.log(folder);
-            */
-            var path = FileSystemModule.path.join('/storage/emulated/0/', "Fabiyo");
-            var folder = FileSystemModule.Folder.fromPath(path).toString();
-            this.state.folder = android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/Mon_Contrat_Obseque";
+            this.state.directoryRoot = android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/Mon_Contrat_Obseque";
         } else {
 
         }

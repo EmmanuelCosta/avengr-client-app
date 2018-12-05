@@ -97,16 +97,17 @@ export default {
          this.loading = true;
          console.log("download file !")
          const token = localStorage.getItem("token");
-         dialogsModule.action({
-            title: "Download file \"" + item.name + "\".pdf",
-            okButtonText: "ok",
-            cancelable: true,
-            message: "Vérification d'un bug"
-        });
          contratService.get(token).then((resp) => {
             var contrat = resp.content.toJSON();
             documentService.downloadFile(token,  contrat.code, item.code).then((file) => {
-                documentService.saveFile(file, item.name, this.$store.getPathRootFolder());
+                console.dir(resp.content);
+                dialogsModule.action({
+                    title: "Download file \"" + item.name + "\".pdf",
+                    okButtonText: "ok",
+                    cancelable: true,
+                    message: "Vérification d'un bug\n" + resp.content.toFile()
+                });
+                //documentService.saveFile(file, item.name, this.$store.getPathRootFolder());
             }, (error) => {
                 this.loading = true;
                 console.dir(error);
