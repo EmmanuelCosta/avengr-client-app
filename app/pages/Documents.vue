@@ -1,10 +1,10 @@
 <template>
     <page-component title="Mes Documents">
-        <StackLayout >
+        <GridLayout rows="50,*" columns="*">
 
             <stack-layout
                 padding="10"
-                 >
+                 row="0" col="0">
                 <label 
                     text="Veuillez clisquer sur le document à visualiser"
                     color="#34bfc5"
@@ -13,16 +13,16 @@
                     textAlignment="center"/>
             </stack-layout>
 
-            <!--ActivityIndicator
+            <ActivityIndicator
                 col="0"
-                row="0" rowSpan="3"
+                row="0" rowSpan="2"
                 class="color-primary"
                 :busy="loading"
                 width="100"
                 height="100"
-                verticalAlignment="middle"/-->
+                verticalAlignment="middle"/>
             
-            <stack-layout >
+            <stack-layout row="1" col="0" v-if="!loading">
                 <scroll-view>
                     <stack-layout padding="5">
                         
@@ -56,17 +56,18 @@
                 </scroll-view>
             </stack-layout>
 
-        </StackLayout>
+        </GridLayout>
     </page-component>
 </template>
 
 <script>
-//import DrawerComponent from "./../components/DrawerComponent";
+
 import PageComponent from "./../components/PageComponent";
 import DocumentService from "./../shared/services/document.js";
 import ContratService from "./../shared/services/contrat.js";
+import * as DialogsModule from "ui/dialogs"
+import { File as FileModule, path as PathModule } from "file-system";
 
-const dialogsModule = require("tns-core-modules/ui/dialogs");
 
 const documentService = new DocumentService();
 const contratService = new ContratService();
@@ -79,7 +80,7 @@ export default {
 
   data() {
     return {
-        loading: false,
+        loading: true,
         colors: [
             "#8e24aa", //purple
             "#4caf50", //green
@@ -94,25 +95,65 @@ export default {
 
   methods: {
      selectItem(item) {
-         this.loading = true;
          console.log("download file !")
          const token = localStorage.getItem("token");
-         contratService.get(token).then((resp) => {
-            var contrat = resp.content.toJSON();
-            documentService.downloadFile(token,  contrat.code, item.code).then((file) => {
-                console.dir(resp.content);
-                dialogsModule.action({
-                    title: "Download file \"" + item.name + "\".pdf",
-                    okButtonText: "ok",
-                    cancelable: true,
-                    message: "Vérification d'un bug\n" + resp.content.toFile()
-                });
-                //documentService.saveFile(file, item.name, this.$store.getPathRootFolder());
-            }, (error) => {
+         
+        DialogsModule.confirm({
+            message: "Voulez vous télécharger ce document \"" + item.name + ".pdf\" ? ",
+            title: "Téléchargement des documents",
+            cancelable: false,
+            okButtonText: "télécharger",
+            cancelButtonText: "Annuler"
+        }).then((responseDialog) => {
+            if(responseDialog) {
                 this.loading = true;
-                console.dir(error);
-            })
-         });
+                contratService.get(token).then((response) => {
+                    var contrat = response.content.toJSON();
+                    documentService.downloadFile(token,  contrat.code, item.code).then((response) => {
+                        console.dir("HEADERS");
+                        console.dir(response.headers);
+                        console.dir("BODY or CONTENT");
+                        console.dir(response.content);
+
+                        console.dir(response.content.toFile());
+                        const content = response.content.toFile().readTextSync();
+
+                        alert(content);
+
+                        console.dir("Save File");
+                        const path = PathModule.join(this.$store.getDirectoryRoot().path, item.name + ".pdf");
+                        const file = FileModule.fromPath(path);
+                        
+                        if(FileModule.exists(path)) {
+                            file.remove().then(() => {
+                                console.dir("Remove File : " + item.name + ".pdf");
+                                const file = FileModule.fromPath(path);
+                                console.dir("Write File : " + item.name + ".pdf");
+                                file.writeTextSync(content, (result) => {
+                                    console.dir("Error !");
+                                    console.dir(result);
+                                });
+                                this.loading = false;
+                            });
+                        } else {
+                            console.dir("Write File : " + item.name + ".pdf");
+                            file.writeTextSync(content, (result) => {
+                                console.dir("Error !");
+                                console.dir(result);
+                            });
+                            this.loading = false;
+                        }
+                        
+                    }, (error) => {
+                        this.loading = false;
+                        console.dir(error);
+                    })
+                    
+                });
+                
+            }
+            
+        });
      },
 
      getRandomColor() {

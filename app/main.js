@@ -20,5 +20,5 @@ Vue.prototype.$socialShare = SocialShare;
 Vue.prototype.$store.defineDirectoryRoot();
 
 new Vue({
-    render: h => h('frame', [h(App)])
+    render: h => h('frame', [h(Vue.prototype.$pages.login)])
 }).$start();

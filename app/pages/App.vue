@@ -15,8 +15,7 @@
                     class="color-primary"
                     :busy="loading"
                     width="100"
-                    height="100"
-                    verticalAlignment="middle"/>
+                    height="100"/>
                 
                 <Image
                     v-if="!loading"

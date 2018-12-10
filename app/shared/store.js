@@ -1,12 +1,13 @@
 import * as PlatformModule from "platform";
-import * as FileSystemModule from "file-system";
+import { Folder as FolderModule, path as PathModule } from "file-system";
+import * as AndroidPermissionModule from "nativescript-permissions"
 
 export default class Store {
     constructor() {
         this.state = {
             user: {},
             messageToShare: '',
-            directoryRoot: ''
+            directoryRoot: undefined
         }
     }
 
@@ -27,9 +28,27 @@ export default class Store {
     }
 
     defineDirectoryRoot() {
+
         if (PlatformModule.isAndroid) {
-            this.state.directoryRoot = android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/Mon_Contrat_Obseque";
-        } else {
+            const rootPath = android.os.Environment.getExternalStorageDirectory().getAbsolutePath().toString();
+
+            if (!AndroidPermissionModule.hasPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                AndroidPermissionModule.requestPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE).then(() => {
+                    console.log("has permission");
+                }).catch(() => {
+                    console.log("no permission");
+                })
+            }
+
+            if (!AndroidPermissionModule.hasPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                AndroidPermissionModule.requestPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE).then(() => {
+                    this.state.directoryRoot = FolderModule.fromPath(PathModule.join(rootPath, "Mon_Contrat_Obseque"));
+                }).catch(() => {
+                    console.log("no permission");
+                })
+            } else {
+                this.state.directoryRoot = FolderModule.fromPath(PathModule.join(rootPath, "Mon_Contrat_Obseque"));
+            }
 
         }
     }
