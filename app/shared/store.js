@@ -7,8 +7,17 @@ export default class Store {
         this.state = {
             user: {},
             messageToShare: '',
-            directoryRoot: undefined
+            directoryRoot: undefined,
+            documents: undefined
         }
+    }
+
+    setDocuments(documents) {
+        this.state.documents = documents;
+    }
+
+    getDocuments() {
+        return this.state.documents;
     }
 
     setUser(user) {

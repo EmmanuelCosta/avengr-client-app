@@ -65,9 +65,9 @@
 import PageComponent from "./../components/PageComponent";
 import DocumentService from "./../shared/services/document.js";
 import ContratService from "./../shared/services/contrat.js";
-import * as DialogsModule from "ui/dialogs"
+import * as DialogsModule from "ui/dialogs";
+import * as ApplicationModule from "application";
 import { File as FileModule, path as PathModule } from "file-system";
-
 
 const documentService = new DocumentService();
 const contratService = new ContratService();
@@ -110,38 +110,30 @@ export default {
                 contratService.get(token).then((response) => {
                     var contrat = response.content.toJSON();
                     documentService.downloadFile(token,  contrat.code, item.code).then((response) => {
-                        console.dir("HEADERS");
-                        console.dir(response.headers);
-                        console.dir("BODY or CONTENT");
-                        console.dir(response.content);
-
-                        console.dir(response.content.toFile());
-                        const content = response.content.toFile().readTextSync();
-
-                        alert(content);
-
-                        console.dir("Save File");
-                        const path = PathModule.join(this.$store.getDirectoryRoot().path, item.name + ".pdf");
-                        const file = FileModule.fromPath(path);
+                        const binaryFile = response.content.toFile().readSync(err => { console.log("Error:" + err); });
+                        const fileDownload = FileModule.fromPath(response.content.toFile().path);
                         
-                        if(FileModule.exists(path)) {
-                            file.remove().then(() => {
-                                console.dir("Remove File : " + item.name + ".pdf");
-                                const file = FileModule.fromPath(path);
-                                console.dir("Write File : " + item.name + ".pdf");
-                                file.writeTextSync(content, (result) => {
-                                    console.dir("Error !");
-                                    console.dir(result);
-                                });
-                                this.loading = false;
-                            });
-                        } else {
-                            console.dir("Write File : " + item.name + ".pdf");
-                            file.writeTextSync(content, (result) => {
-                                console.dir("Error !");
-                                console.dir(result);
-                            });
-                            this.loading = false;
+                        const file = FileModule.fromPath(PathModule.join(this.$store.getDirectoryRoot().path, item.name + ".pdf"));
+                        
+                        file.writeSync(fileDownload.readSync(), (error) => {
+                            console.log("Error 1");
+                            console.dir(error)
+                        });
+
+                        this.loading = false;
+                        
+                        //Open file
+
+                        try {
+                            var intent = new android.content.Intent(android.content.Intent.ACTION_VIEW);
+                            intent.setAction(android.content.Intent.ACTION_VIEW);
+                            const filePDF = new java.io.File(file.path);
+                            intent.setDataAndType(android.net.Uri.fromFile(filePDF), "application/pdf");
+                            ApplicationModule.android.currentContext.startActivity(intent);
+                            
+                        } catch (error) {
+                            console.log(error.toString());
+                            console.log("Missing PDF application");
                         }
                         
                     }, (error) => {
@@ -163,16 +155,18 @@ export default {
   },
 
   mounted() {
-      const token = localStorage.getItem("token");
-      documentService.get(token).then((resp)=>{
-          resp.content.toJSON().forEach(element => {
-              element.color = this.getRandomColor();
-              this.documents.push(element);
-          });
-          this.loading = false;
-      }, (error)=>{
+       const token = localStorage.getItem("token");
+            documentService.get(token).then((resp)=>{
+                resp.content.toJSON().forEach(element => {
+                    element.color = this.getRandomColor();
+                    this.documents.push(element);
+                });
+                this.$store.setDocuments(this.documents);
+                this.loading = false;
+            }, (error)=>{
 
-      });
+            });
+      
   },
 };
 </script>
